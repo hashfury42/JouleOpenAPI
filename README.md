@@ -88,7 +88,7 @@ http://localhost:8000/list_accounts?verify_key=QhDv4SAM2JEDvDd8
 
 ## 3. 获取某个地址下面收到的总积分值
 ### URL
-http://localhost:8000/get_received_by_address?verify_key=QhDv4SAM2JEDvDd8&address=JLSj8mDh1EvTwNuDqvmKJXoB62oWgXpXJy###Response
+http://localhost:8000/get_received_by_address?verify_key=QhDv4SAM2JEDvDd8&address=JLSj8mDh1EvTwNuDqvmKJXoB62oWgXpXJy
 ### Response
 {
   "receivedbyaddress": 1440458.00010000, 
