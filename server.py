@@ -4,45 +4,94 @@ import sys
 import time
 import json
 import random
+import config
 from flask import jsonify
 from flask import Flask, render_template, request
 from joule_api import JouleRPC
+from utils import verify
 
-JOULE_RPC_MODE = 0
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "d3Rf3l0q34dGfeeTJkleNmmljeklFertReG"
 
 
-@app.route('/get_mining_info')
+joule_rpc = JouleRPC()
+joule_rpc.set_rpc_user(config.RPC_USER)
+joule_rpc.set_rpc_password(config.RPC_PASSWD)
+
+
+@app.route("/get_mining_info")
+@verify
 def get_mining_info():
-    joule_rpc = JouleRPC()
-    mining_info = joule_rpc.get_mininginfo()
-    mining_info["difficulty"] = float(mining_info["difficulty"])
+    mining_info = joule_rpc.get_mining_info()
     return jsonify(mining_info)
 
 
-@app.route('/get_best_block')
+@app.route("/get_received_by_address")
+@verify
+def get_received_by_address():
+    receivedbyaddress = joule_rpc.get_received_by_address(request.args["address"])
+    return jsonify(receivedbyaddress)
+
+
+@app.route("/list_accounts")
+@verify
+def list_accounts():
+    accounts = joule_rpc.list_accounts()
+    return jsonify(accounts)
+
+
+@app.route("/get_info")
+@verify
+def get_info():
+    info = joule_rpc.get_info()
+    return jsonify(info)
+
+
+@app.route("/get_best_block")
+@verify
 def get_best_block():
-    joule_rpc = JouleRPC()
     best_block = joule_rpc.get_best_block()
-    res = {
-        "height": best_block["height"],
-        "difficulty": float(best_block["difficulty"]),
-        "time": time.strftime("%Y/%m/%d %H:%M:%S", time.localtime(best_block["time"])),
-        "hash": best_block["hash"]
-    }
-    return jsonify(res)
+    return jsonify(best_block)
+
+
+@app.route("/send_to_address")
+@verify
+def send_to_address():
+    tx_id = joule_rpc.send_to_address(request.args["address"], float(request.args["amount"]))
+    return jsonify(tx_id)
+
+
+@app.route("/get_transaction")
+@verify
+def get_transaction():
+    tx = joule_rpc.get_transaction(request.args["tx_id"])
+    return jsonify(tx)
+
+
+@app.route("/create_new_account")
+@verify
+def create_new_account():
+    account = joule_rpc.create_new_account(request.args["account_name"])
+    return jsonify(account)
+
+
+@app.route("/get_addresses_by_account")
+@verify
+def get_addresses_by_account():
+    addresses = joule_rpc.get_addresses_by_account(request.args["account_name"])
+    return jsonify(addresses)
+
+
+@app.route("/get_new_address")
+@verify
+def get_new_address():
+    address = joule_rpc.get_new_address(request.args["account_name"])
+    return jsonify(address)
 
 
 if __name__ == '__main__':
 
     port = 8000
+    app.run(host="127.0.0.1", port=port, threaded=True)
 
-    if len(sys.argv) > 1:
-        port = int(sys.argv[1])
-        rpc_mode = int(sys.argv[2])
-        JOULE_RPC_MODE = rpc_mode
-        app.run(host='0.0.0.0', port=port, threaded=True)
-    else:
-        app.run(host='127.0.0.1', port=port, debug=True)

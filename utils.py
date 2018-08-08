@@ -1,72 +1,31 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+import functools
+from flask import request
+from flask import jsonify
+from config import VERIFY_KEY
 
-
-def handle_exception(func):
-    def wrapper(*args, **kwargs):
-            try:
-                return func(*args, **kwargs)
-            except Exception as e:
-                return e.message
-    return wrapper
-
-
-@handle_exception
-def func():
-    return 1
-
-
-print func()
-
-
-class tracer:
-
-    def __init__(self, func):
-        self.calls = 0
-        self.func = func
-
-    def __call__(self, *args):
-        self.calls += 1
-        print('call %s to %s' % (self.calls, self.func.__name__))
-        self.func(*args)
-
-
-@tracer
-def spam(a, b, c):
-    print(a + b + c)
-
-
-spam(1, 2, 3)
-spam(1, 2, 3)
-
-
-class Foo(object):
-    def __init__(self):
-        pass
-
-    def __call__(self, func):
-        def _call(*args, **kw):
-            print 'class decorator runing'
-            return func(*args, **kw)
-
-        return _call
-
-
-class Bar(object):
-    @Foo()
-    def bar(self, test, ids):
-        print test, ids
 
 class ExceptionHandler(object):
 
     def __call__(self, func):
-        def _call(*args, **kw):
+        def _call(*args, **kwargs):
             try:
-                return func(*args, **kw)
+                res = func(*args, **kwargs)
+                res_final = {"status": 0}
+                res_final.update(res)
+                return res_final
             except Exception as e:
-                return e.message
+                return {"status": -1, "err_msg": e.message}
+
         return _call
 
 
-
-Bar().bar('aa', 'ids')
+def verify(func):
+    @functools.wraps(func)
+    def call(*args, **kwargs):
+        if VERIFY_KEY != request.args.get("verify_key"):
+            return jsonify({"status": -1, "err_msg": "verify_key is not accepted!"})
+        else:
+            return func(*args, **kwargs)
+    return call
