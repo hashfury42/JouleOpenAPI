@@ -44,7 +44,7 @@ python server.py
 JouleNode[RPC] --> FlaskServer[HTTP]
 本API包含两个部分，一部分是焦耳区块链节点，它开放的是RPC端口调用，为了大家使用方便（主要是跨语言支持），我们在RPC上面封装了一个简单
 Flask HTTP接口，考虑到充值提现场景较为低频，大部分场景下面应该不会遇到太大的效率问题，如果有大家可以自己来进行扩展，提高并发性
-##安全警示
+## 安全警示
 本API仅限服务器内网使用，不可以直接在服务中对外开放，否则可能导致积分被盗，请使用时务必保证是内网调用，并定制自己的SECRET_KEY
 
 
@@ -54,7 +54,7 @@ Flask HTTP接口，考虑到充值提现场景较为低频，大部分场景下�
 ## 1. 获取当前挖矿信息
 ### URL
 http://localhost:8000/get_mining_info?verify_key=QhDv4SAM2JEDvDd8
-###Response
+### Response
 {
   "mininginfo": {
     "blocks": 415944, 
@@ -73,9 +73,9 @@ http://localhost:8000/get_mining_info?verify_key=QhDv4SAM2JEDvDd8
 }
 
 ## 2. 获取当前节点各个账户的余额
-###URL
+### URL
 http://localhost:8000/list_accounts?verify_key=QhDv4SAM2JEDvDd8
-###Response
+### Response
 {
   "accounts": {
     "": -666.0041, 
@@ -87,9 +87,9 @@ http://localhost:8000/list_accounts?verify_key=QhDv4SAM2JEDvDd8
 }
 
 ## 3. 获取某个地址下面收到的总积分值
-###URL
+### URL
 http://localhost:8000/get_received_by_address?verify_key=QhDv4SAM2JEDvDd8&address=JLSj8mDh1EvTwNuDqvmKJXoB62oWgXpXJy###Response
-###Response
+### Response
 {
   "receivedbyaddress": 1440458.00010000, 
   "status": 0
@@ -110,9 +110,9 @@ http://localhost:8000/get_info?verify_key=QhDv4SAM2JEDvDd8
 
 
 ## 5. 获取当前区块链最新区块的信息
-###URL
+### URL
 http://localhost:8000/get_best_block?verify_key=QhDv4SAM2JEDvDd8
-###Response
+### Response
 {
   "best_block_info": {
     "bits": "1d013d5f", 
@@ -134,23 +134,23 @@ http://localhost:8000/get_best_block?verify_key=QhDv4SAM2JEDvDd8
 }
 
 
-##6. 往某个地址转账一定金额
+## 6. 往某个地址转账一定金额
 传参：address(地址)，amount(金额)
-###URL
+### URL
 http://localhost:8000/send_to_address?verify_key=QhDv4SAM2JEDvDd8&address=JLSj8mDh1EvTwNuDqvmKJXoB62oWgXpXJy&amount=1.0
-###Response
+### Response
 {
   "status": 0, 
   "tx_id": "df2347a3a9da97976473523e3f01b5037269b4c304584d238d77d046777a528c"
 }
 
 
-##7. 获取某条交易的详细信息
+## 7. 获取某条交易的详细信息
 传参：tx_id（交易ID）
 注意返回值里面的confirmations参数代表了区块链的确认次数，一般默认是6次确认正式到账，但是方便起见，2次一般也可以认为到账了
-###URL
+### URL
 http://localhost:8000/get_transaction?verify_key=QhDv4SAM2JEDvDd8&tx_id=df2347a3a9da97976473523e3f01b5037269b4c304584d238d77d046777a528c
-###Response
+### Response
 {
   "status": 0, 
   "tx_info": {
@@ -183,11 +183,11 @@ http://localhost:8000/get_transaction?verify_key=QhDv4SAM2JEDvDd8&tx_id=df2347a3
 }
 
 
-##8. 创建一个新的账户
+## 8. 创建一个新的账户
 传参：account_name（要创建的账户名）
-###URL
+### URL
 http://localhost:8000/create_new_account?verify_key=QhDv4SAM2JEDvDd8&account_name=blank3
-###Response
+### Response
 {
   "account": "blank3", 
   "address": "JWx6usPriDwtxXE7Vv1LATV1ZteQpm5Xmv", 
@@ -195,11 +195,11 @@ http://localhost:8000/create_new_account?verify_key=QhDv4SAM2JEDvDd8&account_nam
 }
 
 
-##9. 获取某个账户下面所有的地址
+## 9. 获取某个账户下面所有的地址
 传参：account_name（要查询的账户名）
-###URL
+### URL
 http://localhost:8000/get_addresses_by_account?verify_key=QhDv4SAM2JEDvDd8&account_name=blank3
-###Response
+### Response
 {
   "address": [
     "JaejYzRNcJWZNJYpbbNQm4jz7j8mLeMmFZ", 
@@ -208,11 +208,11 @@ http://localhost:8000/get_addresses_by_account?verify_key=QhDv4SAM2JEDvDd8&accou
   "status": 0
 }
 
-##10. 获取某个账户新生成的一个地址
+## 10. 获取某个账户新生成的一个地址
 传参：account_name（要查询的账户名）
-###URL
+### URL
 http://localhost:8000/get_new_address?verify_key=QhDv4SAM2JEDvDd8&account_name=blank3
-###Response
+### Response
 {
   "new_address": "JKDNyVAxCKPVYbfDvRZiapGBgdrcVjUEbE", 
   "status": 0
