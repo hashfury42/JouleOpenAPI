@@ -9,7 +9,6 @@
 只需要 
 ```angular2html
 vi ~/.joulecoin/joulecoin.conf
-
 ```
 
 输入 
@@ -23,7 +22,7 @@ rpcpassword=rpc_passwd
 ```angular2html
 ./joulecond -daemon
 ```
-##step-3
+## step-3
 OK, 焦耳区块链全节点已经部署完毕！只需要等待区块同步完成即可
 这时你还可以用命令行体验一下，看看目前当前算力和同步区块数
 ```angular2html
@@ -38,8 +37,8 @@ pip install -r requirements.txt
 python server.py
 ```
 
-#特别说明（必读）
-##基本架构
+# 特别说明（必读）
+## 基本架构
 在开始之前，本文有必要简述一下本API的架构。
 
 JouleNode[RPC] --> FlaskServer[HTTP]
@@ -49,11 +48,11 @@ Flask HTTP接口，考虑到充值提现场景较为低频，大部分场景下�
 本API仅限服务器内网使用，不可以直接在服务中对外开放，否则可能导致积分被盗，请使用时务必保证是内网调用，并定制自己的SECRET_KEY
 
 
-#接口实例
-##基本说明
+# 接口实例
+## 基本说明
 所有接口返回状态中，status=0 表示接口返回成功， status=-1 表示返回错误
-##1. 获取当前挖矿信息
-###URL
+## 1. 获取当前挖矿信息
+### URL
 http://localhost:8000/get_mining_info?verify_key=QhDv4SAM2JEDvDd8
 ###Response
 {
@@ -73,7 +72,7 @@ http://localhost:8000/get_mining_info?verify_key=QhDv4SAM2JEDvDd8
   "status": 0
 }
 
-##2. 获取当前节点各个账户的余额
+## 2. 获取当前节点各个账户的余额
 ###URL
 http://localhost:8000/list_accounts?verify_key=QhDv4SAM2JEDvDd8
 ###Response
@@ -87,7 +86,7 @@ http://localhost:8000/list_accounts?verify_key=QhDv4SAM2JEDvDd8
   "status": 0
 }
 
-##3. 获取某个地址下面收到的总积分值
+## 3. 获取某个地址下面收到的总积分值
 ###URL
 http://localhost:8000/get_received_by_address?verify_key=QhDv4SAM2JEDvDd8&address=JLSj8mDh1EvTwNuDqvmKJXoB62oWgXpXJy###Response
 ###Response
@@ -96,10 +95,10 @@ http://localhost:8000/get_received_by_address?verify_key=QhDv4SAM2JEDvDd8&addres
   "status": 0
 }
 
-##4. 获取当前节点的总余额
-###URL
+## 4. 获取当前节点的总余额
+### URL
 http://localhost:8000/get_info?verify_key=QhDv4SAM2JEDvDd8
-###Response
+### Response
 {
   "info": {
     "balance": 771151.996, 
@@ -110,7 +109,7 @@ http://localhost:8000/get_info?verify_key=QhDv4SAM2JEDvDd8
 }
 
 
-##5. 获取当前区块链最新区块的信息
+## 5. 获取当前区块链最新区块的信息
 ###URL
 http://localhost:8000/get_best_block?verify_key=QhDv4SAM2JEDvDd8
 ###Response
